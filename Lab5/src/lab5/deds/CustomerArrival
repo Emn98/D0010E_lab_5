@@ -1,0 +1,36 @@
+package lab5.snabbköpsevent;
+
+import lab5.deds.State;
+import lab5.shoppingstate.ShoppingState;
+
+import lab5.deds.Event;
+
+import lab5.deds.EventQueue;
+import lab5.shoppingstate.ArrivalTime;
+import lab5.shoppingstate.CustomerFactory;
+
+
+
+public class CustomerArrival extends Event{
+
+	private ShoppingState state;
+	private VaruPlock varuPlock;
+	private EventQueue queue;
+	private double arrivalTime;
+	private ArrivalTime arrival;
+	
+	public CustomerArrival() {
+		arrivalTime = arrival.calcNextCustArrival();
+		Customer newCustomer = state.makeCustomer();
+		varuPlock = new VaruPlock(newCustomer);
+	}
+	
+	public void execute() {
+		queue.addEvent(varuPlock);
+		if(state.isOpen() == false) {
+			return;
+		}else {
+			queue.addEvent(this);
+		}
+	}
+}
