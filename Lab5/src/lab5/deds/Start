@@ -1,0 +1,22 @@
+package lab5.snabbköpsevent;
+
+import lab5.deds.Event;
+import lab5.deds.EventQueue;
+
+public class Start extends Event{
+	
+	private double time = 0;
+	private CustumerArrival custArrival;
+	private EventQueue queue;
+	
+	public Start() {
+		custArrival = new CustumerArrival();
+		queue = new EventQueue();
+		queue.addEvent(this);
+	}
+	
+	public void execute() {
+		queue.addEvent(custArrival);
+	}
+
+}
