@@ -1,5 +1,6 @@
 package snabbköp.state;
 import lab5.deds.*;
+import snabbköp.state.CustomerFactory.Customer;
 
 public class SnabbköpState extends State {
 
@@ -31,7 +32,7 @@ public class SnabbköpState extends State {
 	private double pMin, pMax;
 	
 	
-	SnabbköpState(long seed, double lambda, double kMin, double kMax, double pMin, double pMax, int nrOfRegisters, int maxNrOfCustomerInStoreAtOnce, double closingTime) {
+	public SnabbköpState(long seed, double lambda, double kMin, double kMax, double pMin, double pMax, int nrOfRegisters, int maxNrOfCustomerInStoreAtOnce, double closingTime) {
 		this.seed = seed;
 		this.lambda = lambda;
 		this.kMin = kMin;
@@ -44,7 +45,7 @@ public class SnabbköpState extends State {
 		this.maxNrOfCustomerInStoreAtOnce = maxNrOfCustomerInStoreAtOnce;
 		this.closingTime = closingTime;
 		
-		regQueue = new RegisterQueue(); 
+		regQueue = new RegisterQueue(this); 
 		factory = new CustomerFactory();
 		
 		arrivalTimeManager = new ArrivalTime(this,lambda,seed);
@@ -53,9 +54,10 @@ public class SnabbköpState extends State {
 		
 	}
 	
-	public void makeCustomer(double arrivalTime) {
-		factory.makeNewCustomer(arrivalTime);
+	public Customer makeACustomer() {
+		return factory.makeNewCustomer();
 	}
+	
 	
 	public double calcNextCustomerArrival() {
 		return arrivalTimeManager.calcNextCustArrival();
@@ -65,7 +67,11 @@ public class SnabbköpState extends State {
 		return timeToGatherGoodsManager.calcTimeToGatherGoods();
 	}
 	
-	public boolean isOpen() {
+	public double calcTimeToPay() {
+		return timeToPayManager.calcTimeToPayForGoods();
+	}
+	
+	public boolean isClosed() {
 		return isClosed;
 	}	
 	
@@ -73,7 +79,7 @@ public class SnabbköpState extends State {
 		isClosed = true;
 	}
 	
-	public boolean freeRegisters(){
+	public boolean isFreeRegister(){
 		if(nrOfFreeRegisters != 0) {
 			return true;
 		}else {
@@ -81,10 +87,43 @@ public class SnabbköpState extends State {
 		}
 	}
 	
-	public void newSuccessfullPurchase() {
+	public void increaseSuccessfullPurchase() {
 		succesFullPurchases++;
 	}
 	
+	public double getClosingTime() {
+		return closingTime;
+	}
 	
+	public boolean isFullStore() {
+		if(nrOfCustomerInStoreAtTheMoment == maxNrOfCustomerInStoreAtOnce) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 	
+	public void increaseMissedCustomer() {
+		missedCustomer++;
+	}
+	
+	public void increaseCurrentVisitors() {
+		nrOfCustomerInStoreAtTheMoment++;
+	}
+	
+	public void increaseTotalVisitors() {
+		totalNrOfVisitedCustomer++;
+	}
+	
+	public void increaseNrOfFreeRegisters() {
+		nrOfFreeRegisters++;
+	}
+	
+	public void addCustomerToQueue(Customer c) {
+		regQueue.add(c);
+	}
+	
+	public String getQueueString() {
+		return regQueue.toString();
+	}	
 }
