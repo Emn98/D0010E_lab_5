@@ -22,4 +22,12 @@ public class State extends Observable {
 		stopSimulation = true;
 	}
 	
+	public void updateTotalRunTime(double newTime) {
+		totalTimeRunning = newTime;
+	}
+	
+	public void notifyObs(Event event) {
+		setChanged();
+		notifyObservers(event);
+	}	
 }
