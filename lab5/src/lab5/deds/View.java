@@ -14,13 +14,10 @@ public class View implements Observer{
 	}
 	
 	public void update(Observable o, Object arg) {
-		printOutOnConsol((Event) arg);
 		
 	}
 	
-	private void printOutOnConsol(Event event) {
-		System.out.println("Event : " + event.getEventName() + " " + state.getCurrentRunTime() + " "
-                + ((SnabbköpState) state).getQueue() + ((SnabbköpState) state).getTotalVisitors()) ;
+	public State getState() {
+		return state;
 	}
-
 }
