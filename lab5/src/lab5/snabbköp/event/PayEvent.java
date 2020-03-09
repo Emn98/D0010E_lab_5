@@ -7,32 +7,34 @@ import lab5.snabbköp.state.SnabbköpState;
 
 public class PayEvent extends CustomerDrivenEvents {
 	
+	private SnabbköpState tempState;
 
 	public PayEvent(State state, EventQueue queue, Customer customer) {
 		super(state, queue, customer);
-		double timeToPay = ((SnabbköpState) state).calcTimeToPay();
+		tempState = (SnabbköpState) super.getState();
+		double timeToPay = tempState.calcTimeToPay();
 		this.setExecutionTime(timeToPay);
-		((SnabbköpState) state).decreaseNrOfFreeRegisters();
+		tempState.decreaseNrOfFreeRegisters();
 	}
 
 	public void execute() {
-		State state = this.getState();
 		EventQueue queue = this.getQueue();
 
-		double timePassedBetweenEvents = (this.getTime() - state.getCurrentRunTime());
+		double timePassedBetweenEvents = (this.getTime() - tempState.getCurrentRunTime());
+		tempState.updateTotalRunTime(this.getTime());
+		tempState.updateAffectedTimes(timePassedBetweenEvents);
 
-		state.updateTotalRunTime(this.getTime());
-		state.notifyObs(this);
+		
+		tempState.notifyObs(this);
 		
 		//The effects
-		((SnabbköpState) state).increaseNrOfFreeRegisters();
-		((SnabbköpState) state).decreaseCurrentVisistors();
-		((SnabbköpState) state).increaseSuccesfullpurchases();
-		((SnabbköpState) state).updateAffectedTimes(timePassedBetweenEvents);
+		tempState.increaseNrOfFreeRegisters();
+		tempState.decreaseCurrentVisistors();
+		tempState.increaseSuccesfullpurchases();
 		
-		if(((SnabbköpState) state).queueIsEmpty() == false) {
-			Customer customer = ((SnabbköpState) state).getNextCustomer();
-			queue.addEvent(new PayEvent(state,queue,customer));
+		if(tempState.queueIsEmpty() == false) {
+			Customer customer = tempState.getNextCustomer();
+			queue.addEvent(new PayEvent(tempState,queue,customer));
 		}
 	}
 	
