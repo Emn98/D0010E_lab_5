@@ -106,7 +106,7 @@ public class SnabbköpsView extends View {
 	/**
 	 * prints out the result of the simulation. 
 	 * 
-	 * @param event, of the type StopEvent
+	 * @param event, of the type StopEvent.
 	 */
 	private void printOutStopEventOnConsol(StopEvent event) {
 		double avgFreeRegTime = (((SnabbköpState) state).getTotalFreeRegistersTime()
