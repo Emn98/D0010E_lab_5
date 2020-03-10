@@ -2,13 +2,29 @@ package lab5.deds;
 
 import java.util.ArrayList;
 
+
+/**
+ * Creates an sorted list
+ * 
+ * @author Isak Lundmark, Emil Nyberg and Karl Näslund.
+ *
+ */
 public class SortedSequence {
 	private ArrayList<Event> tempQueue;
-
+	
+	/**
+	 * 
+	 * @param tempQueue is an ArrayList to sort.
+	 */
 	public SortedSequence(ArrayList<Event> tempQueue) {
 		this.tempQueue = tempQueue;
 	}
-
+	
+	
+	/**
+	 * 
+	 * @return sorted list
+	 */
 	public ArrayList<Event> getSortedQueue() {
 		return tempQueue;
 	}
