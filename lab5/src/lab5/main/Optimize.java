@@ -6,62 +6,72 @@ import lab5.deds.EventQueue;
 import lab5.deds.Simulator;
 import lab5.deds.State;
 import lab5.snabbköp.state.SnabbköpState;
-import lab5.snabbköp.view.SnabbköpsView;
 
+/**
+ * 
+ * Main program that finds the optimal amount of registers.
+ * 
+ * @author Isak Lundmark, Emil Nyberg and Karl Näslund.
+ *
+ */
 public class Optimize {
 
 	private int kassor = 1;
-	
-	private long metod_3Seed = 1234;
-	private long seed = 1234;
 	private State state;
 	private int ominalKassa = Integer.MAX_VALUE;
 
 	public static void main(String[] args) {
 		Optimize a = new Optimize();
-		a.metod_3();
-
+		a.metod_3(13);
 	}
 
-	public State metod_1() {
+	private State metod_1(long seed, int kassor) {
 		EventQueue que = new EventQueue();
-		SnabbköpState state = new SnabbköpState(seed, 100.0, 2.0, 3.0, 0.5, 1.0, kassor, 5, 10.00);
+		SnabbköpState state = new SnabbköpState(seed, 1.0, 0.35, 0.6, 0.6, 0.9, kassor, 7, 8.00);
 		new Simulator(state, que, null);
 		return state;
 	}
 
-	public int metod_2() {
-		this.state = metod_1();
-		for (int i = 1; i < ((SnabbköpState) state).getMaxNrOfCustomersInStore(); i++) {
-			State temp = metod_1();
-			if (((SnabbköpState) temp).getNrOfMissedCustomers() < ((SnabbköpState) state).getNrOfMissedCustomers()) {
-				this.state = temp;
+	private int metod_2(long seed) {
+		State bestState = metod_1(seed, kassor);
+		for (int i = 1; i <= ((SnabbköpState) bestState).getMaxNrOfCustomersInStore(); i++) {
+			State testState = metod_1(seed, kassor);
+
+			if (((SnabbköpState) testState).getNrOfMissedCustomers() < ((SnabbköpState) bestState)
+					.getNrOfMissedCustomers()) {
+				bestState = testState;
 			}
 			kassor++;
 		}
 		kassor = 1;
-		return ((SnabbköpState) state).getNrOfRegisters();
+		this.state = bestState;
+		return ((SnabbköpState) bestState).getNrOfRegisters();
 	}
 
-	public void metod_3() {
+	/**
+	 * 
+	 * Finds the optimal amount of registers required.
+	 * 
+	 * @param seed that is used to generate other seeds.
+	 */
+	public void metod_3(long metod_3Seed) {
 		Random rand = new Random();
 		rand.setSeed(metod_3Seed);
 
 		int i = 0;
 
 		while (i < 100) {
-//			this.seed = rand.nextLong();
-			this.seed = 1234;
-			int temp = metod_2();
-			if (temp < ominalKassa) {
-				ominalKassa = temp;
+			long seed = rand.nextLong();
+			int nrOfReg = metod_2(seed);
+			if (nrOfReg < ominalKassa) {
+				ominalKassa = nrOfReg;
 				i = 0;
 			}
 			i++;
 		}
-		System.out.println(((SnabbköpState) state).getMissedCustomers());
-		System.out.println(((SnabbköpState) state).getNrOfRegisters());
-		System.out.println(ominalKassa);
+		System.out.println(ominalKassa + " kassor är den opimala mängden av kassor och det ger "
+				+ ((SnabbköpState) state).getMissedCustomers() + " missade kunder.");
+
 	}
 
 }
