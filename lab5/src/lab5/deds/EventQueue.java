@@ -12,6 +12,7 @@ import java.util.ArrayList;
  */
 public class EventQueue {
 	private ArrayList<Event> eventQueue;
+	private SortedSequence sortedSequence = new SortedSequence();
 
 	public EventQueue() {
 		eventQueue = new ArrayList<Event>();
@@ -25,10 +26,8 @@ public class EventQueue {
 	 * 
 	 */
 	public void addEvent(Event e) {
-		eventQueue.add(e);
-		SortedSequence sortedSequence = new SortedSequence(eventQueue);
-		sortedSequence.sort();
-		eventQueue = sortedSequence.getSortedQueue();
+
+		eventQueue = sortedSequence.add(eventQueue, e);
 	}
 
 	/**
