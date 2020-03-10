@@ -2,6 +2,14 @@ package lab5.deds;
 
 import java.util.ArrayList;
 
+/**
+ * 
+ * Makes a queue for events.
+ * 
+ * @author Isak Lundmark, Emil Nyberg and Karl Näslund.
+ * 
+ *
+ */
 public class EventQueue {
 	private ArrayList<Event> eventQueue;
 
