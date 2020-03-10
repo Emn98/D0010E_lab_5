@@ -15,33 +15,31 @@ public class CustomerArrivalEvent extends CustomerDrivenEvents {
 	}
 	
 	public void execute() {
-		State state = this.getState();
-		EventQueue queue = this.getQueue();
+		SnabbköpState state = (SnabbköpState) super.getState();
+		EventQueue queue = super.getQueue();
 		
 		double timePassedBetweenEvents = (this.getTime() - state.getCurrentRunTime());
-		
+		state.updateAffectedTimes(timePassedBetweenEvents);
 		state.updateTotalRunTime(this.getTime());
+		
 		state.notifyObs(this);
 		
 		//The effects
-		if(((SnabbköpState) state).isClosed() == true) {
-			((SnabbköpState) state).updateAffectedTimes(timePassedBetweenEvents);
+		if(state.isClosed() == true) {
 			return;
 		}
-		
-		if(((SnabbköpState) state).enoughRoomInStore() == false) {
-			((SnabbköpState) state).increaseMissedCustomer();
-			System.out.println("hej");
+	
+		state.increaseTotalVisitors();
+		if(state.enoughRoomInStore() == false) {
+			state.increaseMissedCustomer();
 		}else {
-			((SnabbköpState) state).increaseCurrentVisitors();
-			((SnabbköpState) state).increaseTotalVisitors();
-			queue.addEvent(new PlockEvent(state,queue,this.getCustomer()));
+			state.increaseCurrentVisitors();
+			queue.addEvent(new PlockEvent(state,queue,super.getCustomer()));
 		}
-		queue.addEvent(new CustomerArrivalEvent(state,queue,((SnabbköpState) state).makeNewCustomer()));
-		((SnabbköpState) state).updateAffectedTimes(timePassedBetweenEvents);
+		queue.addEvent(new CustomerArrivalEvent(state,queue,state.makeNewCustomer()));
 	}
 	
 	public String getEventName() {
-		return "Ankomst";
+		return "Ankomst   ";
 	}
 }
