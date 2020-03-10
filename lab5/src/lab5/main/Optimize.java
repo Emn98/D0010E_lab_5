@@ -18,32 +18,67 @@ import lab5.snabbköp.state.SnabbköpState;
  */
 public class Optimize {
 
+	public static final int M = 100;
+	public static final double L = 50.0;
+
+	public static final double LOW_COLLECTION_TIME = 0.45d;
+	public static final double HIGH_COLLECTION_TIME = 0.65d;
+
+	public static final double LOW_PAYMENT_TIME = 0.2d;
+	public static final double HIGH_PAYMENT_TIME = 0.3d;
+
+	public static final int SEED = 42;
+	public static final double END_TIME = 20.0d;
+	public static final double STOP_TIME = 999.0d;
+
 	private int kassor = 1;
 	private State state;
 	private int ominalKassa = Integer.MAX_VALUE;
 
 	public static void main(String[] args) {
 		Optimize a = new Optimize();
-		a.metod_3(13);
+
+		a.printGetOptimalKassor();
+		a.printGetOptimalRandomKassor();
+
 	}
 
-	private State metod_1(long seed, int kassor) {
+	/**
+	 * 
+	 * Runs a simulator.
+	 * 
+	 * @param seed     to try.
+	 * @param Ammaount of kassor to try.
+	 * @return the state the state.
+	 */
+	public State run(long seed, int kassor) {
 		EventQueue que = new EventQueue();
-		SnabbköpState state = new SnabbköpState(seed, 10.0, 0.35, 0.6, 0.6, 0.9, kassor, 7, 8.00);
+		SnabbköpState state = new SnabbköpState(seed, L, LOW_PAYMENT_TIME, HIGH_PAYMENT_TIME, LOW_COLLECTION_TIME,
+				HIGH_COLLECTION_TIME, kassor, M, END_TIME);
 		StartEvent start = new StartEvent(state, que);
-		StopEvent stop = new StopEvent(state, que, 999.00);
+		StopEvent stop = new StopEvent(state, que, STOP_TIME);
 		new Simulator(state, que, null, start, stop);
 		return state;
 	}
 
-	private int metod_2(long seed) {
-		State bestState = metod_1(seed, kassor);
+	/**
+	 * Calculates the optimal amount of register.
+	 * 
+	 * @param seed to try.
+	 * @return the optimal amount of kassor.
+	 */
+	public int getOptimalKassor(long seed) {
+		State bestState = run(seed, kassor);
 		for (int i = 1; i <= ((SnabbköpState) bestState).getMaxNrOfCustomersInStore(); i++) {
-			State testState = metod_1(seed, kassor);
+			State testState = run(seed, kassor);
 
 			if (((SnabbköpState) testState).getNrOfMissedCustomers() < ((SnabbköpState) bestState)
 					.getNrOfMissedCustomers()) {
 				bestState = testState;
+			}
+
+			if (((SnabbköpState) bestState).getNrOfMissedCustomers() == 0) {
+				break;
 			}
 			kassor++;
 		}
@@ -58,7 +93,7 @@ public class Optimize {
 	 * 
 	 * @param seed that is used to generate other seeds.
 	 */
-	public void metod_3(long metod_3Seed) {
+	public int getOptimalRandomKassor(long metod_3Seed) {
 		Random rand = new Random();
 		rand.setSeed(metod_3Seed);
 
@@ -66,16 +101,30 @@ public class Optimize {
 
 		while (i < 100) {
 			long seed = rand.nextLong();
-			int nrOfReg = metod_2(seed);
+			int nrOfReg = getOptimalKassor(seed);
 			if (nrOfReg < ominalKassa) {
 				ominalKassa = nrOfReg;
 				i = 0;
 			}
 			i++;
 		}
-		System.out.println(ominalKassa + " kassor är den opimala mängden av kassor och det ger "
-				+ ((SnabbköpState) state).getMissedCustomers() + " missade kunder.");
+		return ominalKassa;
+	}
 
+	/**
+	 * Runs getOptimalKassor and print its result.
+	 */
+	public void printGetOptimalKassor() {
+		System.out.println(getOptimalKassor(SEED) + " kassor är den optimal mängden av kassor och det ger "
+				+ ((SnabbköpState) state).getMissedCustomers() + " missade kunder.");
+	}
+
+	/**
+	 * Runs getOptimalRandomKassor and print its result.
+	 */
+	public void printGetOptimalRandomKassor() {
+		System.out.println(getOptimalRandomKassor(SEED) + " kassor är den optimal mängden av kassor och det ger "
+				+ ((SnabbköpState) state).getMissedCustomers() + " missade kunder.");
 	}
 
 }
