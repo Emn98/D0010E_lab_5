@@ -2,53 +2,52 @@ package lab5.snabbköp.state;
 
 /**
  * 
- * Creates a customer.
+ * A class for creating customers.
  * 
- * @author Karl Näslund, Emil Nyberg, Isak Lundmark.
- *
+ * @author Isak Lundmark, Emil Nyberg and Karl Näslund.
+ * 
  */
-
 public class CustomerFactory {
-	
-	private int customerId = 0;
-	
-	CustomerFactory(){}
-	
+
+	private int customerId = 0;// Represent the customer id:s.
+
+	public CustomerFactory() {
+	}
+
 	/**
 	 * 
-	 * @return Returns a new customer.
+	 * Returns a new customer with an unique id.
+	 * 
+	 * @return An new customer.
 	 */
-	public Customer makeNewCustomer() {
+	public Customer makeANewCustomer() {
 		Customer newCustomer = new Customer(customerId);
-		customerId++;
+		customerId += 1;
 		return newCustomer;
 	}
 
 	/**
 	 * 
-	 * @author Karl Näslund, Emil Nyberg, Isak Lundmark.
-	 *
+	 * A class to represent customers.
+	 * 
+	 * @author Isak Lundmark, Emil Nyberg and Karl Näslund.
+	 * 
 	 */
-	public class Customer{
-		
-		private int id;
-		
-		/**
-		 * 
-		 * Gives an id to the customer.
-		 * 
-		 * @param id Takes an id for the customer.
-		 */
-		private Customer(int id){
-			this.id = id;
+	public class Customer {
+
+		private int customerId;
+
+		private Customer(int customerId) {
+			this.customerId = customerId;
 		}
-		
+
 		/**
+		 * Returns an customers unique id number.
 		 * 
-		 * @return Returns the customer id.
+		 * @return The id of the customer.
 		 */
 		public int getCustomerId() {
-			return id;
+			return customerId;
 		}
 	}
 }
