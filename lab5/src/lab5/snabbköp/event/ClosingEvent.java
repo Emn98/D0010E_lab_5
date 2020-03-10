@@ -14,18 +14,17 @@ public class ClosingEvent extends Event {
 	}
 	
 	public void execute() {
-		State state = this.getState();
+		SnabbköpState state = (SnabbköpState) super.getState();
 		
 		double timePassedBetweenEvents = (this.getTime() - state.getCurrentRunTime());
+		state.updateAffectedTimes(timePassedBetweenEvents);
 		
 		state.updateTotalRunTime(this.getTime());
 		state.notifyObs(this);
-		
-		((SnabbköpState) state).closeTheStore();
-		((SnabbköpState) state).updateAffectedTimes(timePassedBetweenEvents);
+		state.closeTheStore();
 	}
 	
 	public String getEventName() {
-		return "Stänger";
+		return "Stänger   ";
 	}
 }
