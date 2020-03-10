@@ -3,22 +3,22 @@ package lab5.snabbköp.event;
 import lab5.deds.Event;
 import lab5.deds.EventQueue;
 import lab5.deds.State;
-import snabbköp.state.*;
+import lab5.snabbköp.state.*;
 
 /**
- * Creates an event for when the store is to close.
+ * A class to create an closing event for the store.
  * 
- * @author Karl Näslund, Emil Nyberg and Isak Lundmark.
+ * @author Isak Lundmark, Emil Nyberg and Karl Näslund.
  *
  */
 public class ClosingEvent extends Event {
 
 	/**
+	 * Constructor. Saves the state and queue before it inserts itself to the event
+	 * queue to execute at the time the store closes.
 	 * 
-	 * Creates a closing event.
-	 * 
-	 * @param state Takes a state.
-	 * @param queue Takes an eventqueue.
+	 * @param state that the event can change.
+	 * @param queue that the event can add itself and other events to.
 	 */
 	public ClosingEvent(State state, EventQueue queue) {
 		super(state, queue);
@@ -27,24 +27,26 @@ public class ClosingEvent extends Event {
 	}
 
 	/**
-	 * This method closes the store and updates the affected times.
+	 * Updates the affected times and then closes the store.
 	 */
 	public void execute() {
-		State state = this.getState();
+		SnabbköpState state = (SnabbköpState) super.getState();
 
 		double timePassedBetweenEvents = (this.getTime() - state.getCurrentRunTime());
+		state.updateAffectedTimes(timePassedBetweenEvents);
 
 		state.updateTotalRunTime(this.getTime());
 		state.notifyObs(this);
-
-		((SnabbköpState) state).closeTheStore();
-		((SnabbköpState) state).updateAffectedTimes(timePassedBetweenEvents);
+		state.closeTheStore();
 	}
 
 	/**
-	 * Returns a string of the events name.
+	 * 
+	 * Returns the name of the event.
+	 * 
+	 * @return The name of the event.
 	 */
 	public String getEventName() {
-		return "Stänger";
+		return "Stänger   ";
 	}
 }
