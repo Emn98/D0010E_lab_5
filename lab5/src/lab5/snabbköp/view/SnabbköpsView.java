@@ -14,8 +14,8 @@ import lab5.snabbköp.state.SnabbköpState;
 
 /**
  * 
- * A class that constructs a specialized view that prints the necessary information about the 
- * ongoing simulation.
+ * A class that constructs a specialized view that prints the necessary
+ * information about the ongoing simulation.
  * 
  * @author Isak Lundmark, Emil Nyberg and Karl Näslund.
  * 
@@ -24,28 +24,26 @@ import lab5.snabbköp.state.SnabbköpState;
 public class SnabbköpsView extends View {
 
 	private State state;
-	private DecimalFormat format;//Saves the output format. 
+	private DecimalFormat format;// Saves the output format.
 
 	/**
-	 * Constructor.
-	 * Sets the format the text will have when it is printed. Gets and
-	 * saves the state that is taken as a parameter. 
+	 * Constructor. Sets the format the text will have when it is printed. Gets and
+	 * saves the state that is taken as a parameter.
 	 * 
 	 * 
-	 * @param state the state that the view observes. 
+	 * @param state the state that the view observes.
 	 */
 	public SnabbköpsView(State state) {
 		super(state);
 		this.state = super.getState();
-		format = new DecimalFormat("#0.00");//Sets the output format. 
+		format = new DecimalFormat("#0.00");// Sets the output format.
 	}
-	
+
 	/**
-	 * Decides what print method should be called and
-	 * then calls that method. 
+	 * Decides what print method should be called and then calls that method.
 	 * 
 	 * 
-	 * @param o, the observable object. 
+	 * @param o,   the observable object.
 	 * @param arg, an optional object.
 	 */
 	public void update(Observable o, Object arg) {
@@ -59,8 +57,8 @@ public class SnabbköpsView extends View {
 	}
 
 	/**
-	 * Prints out the initial information (parameters) about the current 
-	 * running simulation. 
+	 * Prints out the initial information (parameters) about the current running
+	 * simulation.
 	 * 
 	 * @param event of the type StartEvent.
 	 */
@@ -70,18 +68,19 @@ public class SnabbköpsView extends View {
 		System.out.println("Antal kassor, N..........: " + ((SnabbköpState) state).getNrOfRegisters());
 		System.out.println("Max som ryms, M..........: " + ((SnabbköpState) state).getMaxNrOfCustomersInStore());
 		System.out.println("Ankomsthastighet, lambda..: " + ((SnabbköpState) state).getLambda());
-		System.out.println("Plocktider, [P_min..Pmax]: " + "[" +((SnabbköpState) state).getPMin() + ".."
-				+ ((SnabbköpState) state).getPMax()+"]");
-		System.out.println("Betaltider, [K_min..Kmax]: " + "["+((SnabbköpState) state).getKMin() + ".."
-				+ ((SnabbköpState) state).getKMax()+"]");
-		System.out.println("Frö, f...................: " + ((SnabbköpState) state).getSeed()+"\n");
+		System.out.println("Plocktider, [P_min..Pmax]: " + "[" + ((SnabbköpState) state).getPMin() + ".."
+				+ ((SnabbköpState) state).getPMax() + "]");
+		System.out.println("Betaltider, [K_min..Kmax]: " + "[" + ((SnabbköpState) state).getKMin() + ".."
+				+ ((SnabbköpState) state).getKMax() + "]");
+		System.out.println("Frö, f...................: " + ((SnabbköpState) state).getSeed() + "\n");
 		System.out.println("FÖRLOPP" + "\n=======");
 		System.out.println("Tid	Händelse		Kund	?	led	ledT	I	$	:-(	köat	köT	köar	[Kassakö..]");
 		System.out.println("0,00" + "\t" + event.getEventName());
 	}
-	
+
 	/**
-	 * Prints out the current time of the simulation and the effects the previous event had on the state.  
+	 * Prints out the current time of the simulation and the effects the previous
+	 * event had on the state.
 	 * 
 	 * @param event of the type Event.
 	 */
@@ -103,8 +102,9 @@ public class SnabbköpsView extends View {
 				+ format.format(((SnabbköpState) state).getTotalQueueTime()) + "\t"
 				+ ((SnabbköpState) state).getQueueSize() + "\t" + ((SnabbköpState) state).getQueue() + "\n");
 	}
+
 	/**
-	 * prints out the result of the simulation. 
+	 * prints out the result of the simulation.
 	 * 
 	 * @param event, of the type StopEvent.
 	 */
@@ -118,7 +118,7 @@ public class SnabbköpsView extends View {
 		System.out.println(format.format(event.getTime()) + "\t" + event.getEventName() + "\n");
 		System.out.println("RESULTAT \n========\n");
 		System.out.println("1) Av " + ((SnabbköpState) state).getTotalVisitors() + " kunder handlade "
-				+ ((SnabbköpState) state).getNumberOfSuccessfullPurchases() + " medan "
+				+ ((SnabbköpState) state).getSucessfullPurschases() + " medan "
 				+ ((SnabbköpState) state).getNrOfMissedCustomers() + " missades.\n");
 		System.out.println("2) Total tid " + ((SnabbköpState) state).getNrOfRegisters() + " kassor varit lediga: "
 				+ format.format(((SnabbköpState) state).getTotalFreeRegistersTime())
