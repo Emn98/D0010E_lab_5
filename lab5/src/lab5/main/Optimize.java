@@ -34,7 +34,13 @@ public class Optimize {
 	private int kassor = 1;
 	private State state;
 	private int ominalKassa = Integer.MAX_VALUE;
-
+	
+	
+	/**
+	 * Runs the program.
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		Optimize a = new Optimize();
 
