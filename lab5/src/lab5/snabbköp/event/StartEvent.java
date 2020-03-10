@@ -6,23 +6,23 @@ import lab5.deds.State;
 import lab5.snabbköp.state.CustomerFactory.Customer;
 import lab5.snabbköp.state.SnabbköpState;
 
-public class StartEvent extends Event{
+public class StartEvent extends Event {
 
 	public StartEvent(State state, EventQueue queue) {
 		super(state, queue);
-		this.setExecutionTime(0);
+		this.setExecutionTime(0.000d);
 	}
-	
+
 	public void execute() {
-		State state = this.getState();
+		SnabbköpState state = (SnabbköpState) this.getState();
 		EventQueue queue = this.getQueue();
-		
+
 		state.notifyObs(this);
-		Customer newCustomer = ((SnabbköpState) state).makeNewCustomer();
+		Customer newCustomer = state.makeNewCustomer();
 		queue.addEvent(new CustomerArrivalEvent(state, queue, newCustomer));
-		queue.addEvent(new ClosingEvent(state,queue));
+		queue.addEvent(new ClosingEvent(state, queue));
 	}
-	
+
 	public String getEventName() {
 		return "Start";
 	}
