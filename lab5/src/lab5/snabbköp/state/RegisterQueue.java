@@ -24,15 +24,19 @@ public class RegisterQueue {
 	public boolean isEmpty() {
 		return registerQueue.size() == 0;
 	}
-	
+
 	public int getSize() {
 		return registerQueue.size();
 	}
-	
+
 	public String toString() {
 		String str = "[";
-		for(int i = 0; i < registerQueue.size(); i++) {
-			str += String.valueOf(registerQueue.get(i).getCustomerId() +", ");
+		for (int i = 0; i < registerQueue.size(); i++) {
+			if (i == 0) {
+				str += String.valueOf(registerQueue.get(i).getCustomerId());
+			} else {
+				str += ", " + String.valueOf(registerQueue.get(i).getCustomerId());
+			}
 		}
 		str += "]";
 		return str;
