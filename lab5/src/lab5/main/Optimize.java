@@ -16,26 +16,12 @@ import lab5.snabbköp.state.SnabbköpState;
  * @author Isak Lundmark, Emil Nyberg and Karl Näslund.
  *
  */
-public class Optimize {
-
-	public static final int M = 100;
-	public static final double L = 50.0;
-
-	public static final double LOW_COLLECTION_TIME = 0.45d;
-	public static final double HIGH_COLLECTION_TIME = 0.65d;
-
-	public static final double LOW_PAYMENT_TIME = 0.2d;
-	public static final double HIGH_PAYMENT_TIME = 0.3d;
-
-	public static final int SEED = 42;
-	public static final double END_TIME = 20.0d;
-	public static final double STOP_TIME = 999.0d;
+public class Optimize implements K {
 
 	private int kassor = 1;
 	private State state;
 	private int ominalKassa = Integer.MAX_VALUE;
-	
-	
+
 	/**
 	 * Runs the program.
 	 * 
@@ -46,7 +32,6 @@ public class Optimize {
 
 		a.printGetOptimalKassor();
 		a.printGetOptimalRandomKassor();
-
 	}
 
 	/**
@@ -132,5 +117,4 @@ public class Optimize {
 		System.out.println(getOptimalRandomKassor(SEED) + " kassor är den optimal mängden av kassor och det ger "
 				+ ((SnabbköpState) state).getMissedCustomers() + " missade kunder.");
 	}
-
 }
