@@ -14,24 +14,25 @@ public class PlockEvent extends CustomerDrivenEvents {
 	}
 
 	public void execute() {
-		State state = this.getState();
+		SnabbköpState state = (SnabbköpState) this.getState();
 		EventQueue queue = this.getQueue();
 
 		double timePassedBetweenEvents = (this.getTime() - state.getCurrentRunTime());
+		state.updateAffectedTimes(timePassedBetweenEvents);
 
 		state.updateTotalRunTime(this.getTime());
 		state.notifyObs(this);
 		
 		//the effects.
-		if(((SnabbköpState) state).isFreeRegisters()) {
-			queue.addEvent(new PayEvent(state,queue,this.getCustomer()));
+		if(state.isFreeRegisters() == true) {
+			queue.addEvent(new PayEvent(state,queue,super.getCustomer()));
 		}else {
-			((SnabbköpState) state).addCustomerToRegisterQueue(this.getCustomer());
+			state.increaseCustomersWhoHadToQueue();
+			state.addCustomerToRegisterQueue(this.getCustomer());
 		}
-		((SnabbköpState) state).updateAffectedTimes(timePassedBetweenEvents);
 	}
 	
 	public String getEventName() {
-		return "Plock";
+		return "Plock    ";
 	}
 }
