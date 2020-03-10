@@ -48,7 +48,7 @@ public class Simulator {
 	 * The main driver that keeps the program running.
 	 */
 	private void driver() {
-		while (queue.hasNext() && state.getStopValue() == false) {
+		while (queue.hasNext() && state.getRunningValue() == true) {
 			queue.run();
 		}
 	}
