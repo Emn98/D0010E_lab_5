@@ -25,7 +25,5 @@ public class Simulator {
         while(queue.hasNext() && state.getStopValue() == false) {
             queue.run();
         }
-    }
-		
+    }		
 }
-
