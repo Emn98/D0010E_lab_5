@@ -5,6 +5,8 @@ import java.util.Random;
 import lab5.deds.EventQueue;
 import lab5.deds.Simulator;
 import lab5.deds.State;
+import lab5.snabbköp.event.StartEvent;
+import lab5.snabbköp.event.StopEvent;
 import lab5.snabbköp.state.SnabbköpState;
 
 /**
@@ -27,8 +29,10 @@ public class Optimize {
 
 	private State metod_1(long seed, int kassor) {
 		EventQueue que = new EventQueue();
-		SnabbköpState state = new SnabbköpState(seed, 1.0, 0.35, 0.6, 0.6, 0.9, kassor, 7, 8.00);
-		new Simulator(state, que, null);
+		SnabbköpState state = new SnabbköpState(seed, 10.0, 0.35, 0.6, 0.6, 0.9, kassor, 7, 8.00);
+		StartEvent start = new StartEvent(state, que);
+		StopEvent stop = new StopEvent(state, que, 999.00);
+		new Simulator(state, que, null, start, stop);
 		return state;
 	}
 
