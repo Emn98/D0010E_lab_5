@@ -14,6 +14,7 @@ public class Event {
 	private double timeWhenExecuted;
 	
 	/**
+	 * Creates an event.
 	 * 
 	 * @param state that the event can change.
 	 * @param queue that the event will be added to.
@@ -38,6 +39,7 @@ public class Event {
 	}
 	
 	/**
+	 * Get the time when the event is going to be executed.
 	 * 
 	 * @return time when the event is due to be executed.
 	 */
@@ -46,6 +48,7 @@ public class Event {
 	}
 	
 	/**
+	 * Get the state that the event is going to change.
 	 * 
 	 * @return the state that the event is going to change.
 	 */
@@ -55,6 +58,8 @@ public class Event {
 	
 	/**
 	 * 
+	 * Get the queue that the event is going to get added to.
+	 * 
 	 * @return the queue that the event is going to get added to.
 	 */
 	public EventQueue getQueue() {
@@ -62,6 +67,8 @@ public class Event {
 	}
 	
 	/**
+	 * 
+	 * Get the name of the event.
 	 * 
 	 * @return the name of the event
 	 */
