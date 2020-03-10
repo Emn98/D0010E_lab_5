@@ -18,9 +18,11 @@ public class ClosingEvent extends Event {
 		
 		double timePassedBetweenEvents = (this.getTime() - state.getCurrentRunTime());
 		state.updateAffectedTimes(timePassedBetweenEvents);
-		
 		state.updateTotalRunTime(this.getTime());
+		
 		state.notifyObs(this);
+		
+		//The effects
 		state.closeTheStore();
 	}
 	
