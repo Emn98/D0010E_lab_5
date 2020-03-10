@@ -12,17 +12,42 @@ import lab5.snabbköp.event.StartEvent;
 import lab5.snabbköp.event.StopEvent;
 import lab5.snabbköp.state.SnabbköpState;
 
+/**
+ * 
+ * A class that constructs a specialized view that prints the necessary information about the 
+ * ongoing simulation.
+ * 
+ * @author Isak Lundmark, Emil Nyberg and Karl Näslund.
+ * 
+ *
+ */
 public class SnabbköpsView extends View {
 
 	private State state;
-	private DecimalFormat format;
+	private DecimalFormat format;//Saves the output format. 
 
+	/**
+	 * Constructor.
+	 * Sets the format the text will have when it is printed. Gets and
+	 * saves the state that is taken as a parameter. 
+	 * 
+	 * 
+	 * @param state the state that the view observes. 
+	 */
 	public SnabbköpsView(State state) {
 		super(state);
 		this.state = super.getState();
-		format = new DecimalFormat("#0.00");
+		format = new DecimalFormat("#0.00");//Sets the output format. 
 	}
-
+	
+	/**
+	 * Decides what print method should be called and
+	 * then calls that method. 
+	 * 
+	 * 
+	 * @param o, the observable object. 
+	 * @param arg, an optional object.
+	 */
 	public void update(Observable o, Object arg) {
 		if (arg instanceof StartEvent) {
 			printOutStartOnConsol((StartEvent) arg);
@@ -33,6 +58,12 @@ public class SnabbköpsView extends View {
 		}
 	}
 
+	/**
+	 * Prints out the initial information (parameters) about the current 
+	 * running simulation. 
+	 * 
+	 * @param event of the type StartEvent.
+	 */
 	private void printOutStartOnConsol(StartEvent event) {
 
 		System.out.println("PARAMETRAR" + "\n=======");
@@ -48,7 +79,12 @@ public class SnabbköpsView extends View {
 		System.out.println("Tid	Händelse		Kund	?	led	ledT	I	$	:-(	köat	köT	köar	[Kassakö..]");
 		System.out.println("0,00" + "\t" + event.getEventName());
 	}
-
+	
+	/**
+	 * Prints out the current time of the simulation and the effects the previous event had on the state.  
+	 * 
+	 * @param event of the type Event.
+	 */
 	private void printOutEventOnConsol(Event event) {
 
 		System.out.print(format.format(event.getTime()) + "\t" + event.getEventName() + "\t" + "\t");
@@ -67,7 +103,11 @@ public class SnabbköpsView extends View {
 				+ format.format(((SnabbköpState) state).getTotalQueueTime()) + "\t"
 				+ ((SnabbköpState) state).getQueueSize() + "\t" + ((SnabbköpState) state).getQueue() + "\n");
 	}
-
+	/**
+	 * prints out the result of the simulation. 
+	 * 
+	 * @param event, of the type StopEvent
+	 */
 	private void printOutStopEventOnConsol(StopEvent event) {
 		double avgFreeRegTime = (((SnabbköpState) state).getTotalFreeRegistersTime()
 				/ ((SnabbköpState) state).getNrOfRegisters());
