@@ -3,15 +3,18 @@ package lab5.deds;
 import java.util.Observable;
 
 /**
- * A general class for the state.
+ * 
+ * A class to represent the general state that can be used by any type of
+ * simulation.
  * 
  * @author Isak Lundmark, Emil Nyberg and Karl Näslund.
- *
+ * 
  */
+
 public class State extends Observable {
 
 	private double totalTimeRunning = 0;
-	private boolean stopSimulation = false;
+	private boolean SimulationIsRunning = false;
 
 	public State() {
 	}
@@ -19,10 +22,10 @@ public class State extends Observable {
 	/**
 	 * Get the running state of the State
 	 * 
-	 * @return true if the simulation is halted. Else false.
+	 * @return true if the simulation is running. Else false.
 	 */
-	public boolean getStopValue() {
-		return stopSimulation;
+	public boolean getRunningValue() {
+		return SimulationIsRunning;
 	}
 
 	/**
@@ -35,10 +38,17 @@ public class State extends Observable {
 	}
 
 	/**
-	 * Halt the halts the simulator.
+	 * Halts the running simulator.
 	 */
 	public void haltSimulation() {
-		stopSimulation = true;
+		SimulationIsRunning = false;
+	}
+
+	/**
+	 * Starts the simulator.
+	 */
+	public void startSimulation() {
+		SimulationIsRunning = true;
 	}
 
 	/**
@@ -59,5 +69,4 @@ public class State extends Observable {
 		setChanged();
 		notifyObservers(event);
 	}
-
 }
