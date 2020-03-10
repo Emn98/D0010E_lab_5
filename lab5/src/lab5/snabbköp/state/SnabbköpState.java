@@ -1,16 +1,16 @@
 package lab5.snabbköp.state;
 
+import lab5.deds.Event;
 import lab5.deds.State;
-import snabbköp.state.CustomerFactory.Customer;
+import lab5.snabbköp.state.CustomerFactory.Customer;
 
 /**
  * 
- * Creates a snabbköpstate.
+ * A class to represent the specialized state. That of a snabbköp.
  * 
- * @author Karl Näslund, Emil Nyberg, Isak Lundmark.
- *
+ * @author Isak Lundmark, Emil Nyberg and Karl Näslund.
+ * 
  */
-
 public class SnabbköpState extends State {
 
 	private int nrOfRegisters;
@@ -42,7 +42,7 @@ public class SnabbköpState extends State {
 
 	/**
 	 * 
-	 * Creates a snabbköpstate.
+	 * Constructor. Creates a SnabbköpState and the relevant instances of classes.
 	 * 
 	 * @param seed                         Takes a seed.
 	 * @param lambda                       Decides the arrivalspeed of the
@@ -57,6 +57,7 @@ public class SnabbköpState extends State {
 	 *                                     in the store at once.
 	 * @param closingTime                  The time for when the store closes.
 	 */
+
 	public SnabbköpState(long seed, double lambda, double kMin, double kMax, double pMin, double pMax,
 			int nrOfRegisters, int maxNrOfCustomerInStoreAtOnce, double closingTime) {
 		this.seed = seed;
@@ -86,7 +87,7 @@ public class SnabbköpState extends State {
 	 * @return Returns a new customer.
 	 */
 	public Customer makeNewCustomer() {
-		return factory.makeNewCustomer();
+		return factory.makeANewCustomer();
 	}
 
 	/**
@@ -129,16 +130,19 @@ public class SnabbköpState extends State {
 	}
 
 	/**
+	 * Checks if the store is closed.
 	 * 
-	 * @return Returns if the store is closed or open.
+	 * @return true if the store is closed, otherwise false.
 	 */
 	public boolean isClosed() {
 		return storeIsClosed;
 	}
 
 	/**
+	 * gets a symbol to represent if the store is open or closed.
 	 * 
-	 * @return Returns a symbol that indicates that the store is open or closed.
+	 * @return Returns a symbol that indicates that the store is open (Ö) or closed
+	 *         (S).
 	 */
 	public String getIsClosedSymbol() {
 		if (isClosed()) {
@@ -149,15 +153,18 @@ public class SnabbköpState extends State {
 
 	/**
 	 * 
-	 * @return Returns the closing time for the store.
+	 * Gets the store's closing time.
+	 * 
+	 * @return the closing time for the store.
 	 */
 	public double getStoreClosingTime() {
 		return storeClosingTime;
 	}
 
 	/**
+	 * Checks if there is a free register available.
 	 * 
-	 * @return Returns if there are free registers or not.
+	 * @return true if there is at least one free registers, otherwise false.
 	 */
 	public boolean isFreeRegisters() {
 		if (nrOfFreeRegisters >= 1) {
@@ -167,8 +174,9 @@ public class SnabbköpState extends State {
 	}
 
 	/**
+	 * Checks if there is enough room in the store to take in more customers.
 	 * 
-	 * @return Returns if the store is full or not.
+	 * @return true if there is enough room, otherwise false.
 	 */
 	public boolean enoughRoomInStore() {
 		if (maxNrOfCustomerInStoreAtOnce > nrOfCustomerInStoreAtTheMoment) {
@@ -178,152 +186,153 @@ public class SnabbköpState extends State {
 	}
 
 	/**
+	 * Gets the total number of customers who have visited the store.
 	 * 
-	 * @return Returns how many customers that has visited the store.
+	 * @return the total number of visited customers.
 	 */
 	public int getTotalVisitors() {
 		return totalNrOfVisitedCustomer;
 	}
 
 	/**
+	 * Gets the number of successful purchases.
 	 * 
-	 * @return Returns how many that has purchased anything.
-	 */
-	public int getNumberOfSuccessfullPurchases() {
-		return succesfullPurchases;
-	}
-
-	/**
-	 * 
-	 * @return Returns how many customers that have been missed.
-	 */
-	public int getNrOfMissedCustomers() {
-		return missedCustomers;
-	}
-
-	/**
-	 * 
-	 * @return Returns how many registers the store has.
-	 */
-	public int getNrOfRegisters() {
-		return nrOfRegisters;
-	}
-
-	/**
-	 * 
-	 * @return Returns how many registers that are free.
-	 */
-	public int getNrOfFreeRegisters() {
-		return nrOfFreeRegisters;
-	}
-
-	/**
-	 * 
-	 * @return Returns how many customers that can be in the store at once.
-	 */
-	public int getMaxNrOfCustomersInStore() {
-		return maxNrOfCustomerInStoreAtOnce;
-	}
-
-	/**
-	 * 
-	 * @return Returns how many customers that are in the store at this moment.
-	 */
-	public int getCurrentCustomersInStore() {
-		return nrOfCustomerInStoreAtTheMoment;
-	}
-
-	/**
-	 * 
-	 * @return Returns how many sucessfull purchases that has been made.
+	 * @return the number of successful purchases.
 	 */
 	public int getSucessfullPurschases() {
 		return succesfullPurchases;
 	}
 
 	/**
+	 * Gets the number of missed customers.
 	 * 
-	 * @return Returns how many customers that have been missed.
+	 * @return the number of missed customers.
+	 */
+	public int getNrOfMissedCustomers() {
+		return missedCustomers;
+	}
+
+	/**
+	 * Gets the total number of registers in the store.
+	 * 
+	 * @return the number of registers in the store.
+	 */
+	public int getNrOfRegisters() {
+		return nrOfRegisters;
+	}
+
+	/**
+	 * Gets the total number of available registers.
+	 * 
+	 * @return The number of free registers.
+	 */
+	public int getNrOfFreeRegisters() {
+		return nrOfFreeRegisters;
+	}
+
+	/**
+	 * Gets the max number of customers that can be in the store at once.
+	 * 
+	 * @return The number of max customers in the store.
+	 */
+	public int getMaxNrOfCustomersInStore() {
+		return maxNrOfCustomerInStoreAtOnce;
+	}
+
+	/**
+	 * Gets the current number of customers in the store at once.
+	 * 
+	 * @return The number of customers in the store.
+	 */
+	public int getCurrentCustomersInStore() {
+		return nrOfCustomerInStoreAtTheMoment;
+	}
+
+	/**
+	 * Gets the total number of customers that got missed during the simulation.
+	 * 
+	 * @return The number of missed customers.
 	 */
 	public int getMissedCustomers() {
 		return missedCustomers;
 	}
 
 	/**
+	 * Gets the number of customers that had to queue.
 	 * 
-	 * @return Returns how many customers that have had to queue.
+	 * @return The number of customers that had to queue.
 	 */
 	public int getCustomersWhoHadToQueue() {
 		return nrOfCustomerWhoHadToQueue;
 	}
 
 	/**
+	 * Gets the current size of the queue.
 	 * 
-	 * @return Returns the size of the queue.
+	 * @return The size of the queue.
 	 */
 	public int getQueueSize() {
 		return regQueue.getSize();
 	}
 
 	/**
+	 * Gets the time when the last pay event occurred during the simulation.
 	 * 
-	 * @return Returns the total amount of visitors.
-	 */
-	public int getTotalNumberOfVisistors() {
-		return totalNrOfVisitedCustomer;
-	}
-
-	/**
-	 * 
-	 * @return Returns the time for when the last payment was made.
+	 * @return The time for the last pay event.
 	 */
 	public double getTimeForLastPayEvent() {
 		return timeWhenLastPayEventIsMade;
 	}
 
 	/**
+	 * Gets the value of lambda.
 	 * 
-	 * @return Returns the customer arrivalspeed.
+	 * @return The value of lambda.
 	 */
 	public double getLambda() {
 		return lambda;
 	}
 
 	/**
+	 * Gets the minimum time it takes to gather the goods.
 	 * 
-	 * @return Returns the time to gather goods.
+	 * @return the shortest time it can take to gather the goods.
 	 */
 	public double getPMin() {
 		return pMin;
 	}
 
 	/**
+	 * Gets the maximum time it takes to gather goods.
 	 * 
-	 * @return Returns the max time to gather goods.
+	 * @return the longest time it can take to gather the goods.
 	 */
 	public double getPMax() {
 		return pMax;
 	}
 
 	/**
+	 * Gets the minimum time it takes to pay.
 	 * 
-	 * @return Returns the lowest time to pay.
+	 * @return the shortest time it can take to pay for the goods.
 	 */
 	public double getKMin() {
 		return kMin;
 	}
 
 	/**
+	 * Gets the maximum time it takes to pay.
 	 * 
-	 * @return Returns the highest time to pay.
+	 * @return the longest time it can take to pay for the goods.
 	 */
 	public double getKMax() {
 		return kMax;
 	}
 
 	/**
+	 * Gets the seed value.
 	 * 
-	 * @return Returns the seed.
+	 * @return the value of the seed.
 	 */
 	public double getSeed() {
 		return seed;
@@ -403,7 +412,7 @@ public class SnabbköpState extends State {
 
 	/**
 	 * 
-	 * Adds a customer to the registerqueue.
+	 * Adds a customer to the register queue.
 	 * 
 	 * @param customer Takes a customer.
 	 */
@@ -412,29 +421,32 @@ public class SnabbköpState extends State {
 	}
 
 	/**
+	 * Checks if the register queue is empty or not. 
 	 * 
-	 * @return Returns if the queue is empty.
+	 * @return true if the queue is empty, otherwise false.
 	 */
 	public boolean queueIsEmpty() {
 		return regQueue.isEmpty();
 	}
 
 	/**
+	 * Removes the first customer standing in the queue. 
 	 * 
-	 * @return Returns and removes the the first customer in the queue.
+	 * @return the first customer in the queue.
 	 */
 	public Customer getNextCustomer() {
 		return regQueue.removeFirstCustomer();
 	}
 
 	/**
+	 * Converts the queue to a string.
 	 * 
-	 * @return Returns a string displaying the queue.
+	 * @return A string visualization of the queue.
 	 */
 	public String getQueue() {
 		return regQueue.toString();
 	}
-
+	
 	/**
 	 * 
 	 * Updates the time that the registers have been unused, when the last payment
@@ -454,14 +466,16 @@ public class SnabbköpState extends State {
 	}
 
 	/**
+	 * Gets the total time customer have had to queue. 
 	 * 
-	 * @return Returns the total time customers have bee queueing.
+	 * @return Returns the total time customers have beeb queueing.
 	 */
 	public double getTotalQueueTime() {
 		return timeCustomersQueuing;
 	}
 
 	/**
+	 * Gets the total time registers have been unused. 
 	 * 
 	 * @return Returns the total time registers have been unused.
 	 */
