@@ -10,15 +10,15 @@ public class StopEvent extends Event {
 		super(state, queue);
 		this.setExecutionTime(stopTime);
 	}
-	
+
 	public void execute() {
 		State state = this.getState();
 		state.updateTotalRunTime(this.getTime());
 		state.notifyObs(this);
 		state.haltSimulation();
 	}
-	
+
 	public String getEventName() {
-		return "Stop";
+		return "Stop    ";
 	}
 }
